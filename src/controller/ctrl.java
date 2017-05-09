@@ -7,15 +7,19 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.User;
 import model.management;
+import model.management.MiObjectInputStream;
 import model.management.MiObjectOutputStream;
 import view.adduser;
 import view.mainw;
@@ -44,9 +48,9 @@ public class ctrl implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == mw.jMenuItem1) {
+        if (e.getSource() == mw.jMenuItem1) {//Add new user menu item
             au.setVisible(true);
-        } else if (e.getSource() == au.jButton1) { //add new user
+        } else if (e.getSource() == au.jButton1) { //add new user button
             User user = new User(); //Create new user
 
             //Asign values to the user
@@ -73,9 +77,32 @@ public class ctrl implements ActionListener {
             String s[] = new String[]{"DNI", "Name", "Surname", "Birth", "Address", "Phone", "Username", "Password", "Email"};
             dm.setColumnIdentifiers(s);
             sh.jTable1.setModel(dm);
-            Vector<String> vector = new Vector<String>();
-            vector.add("freafr");
-            dm.addRow(vector);
+            sh.jTable1.setEnabled(false);
+
+            try (MiObjectInputStream ois = new MiObjectInputStream(new FileInputStream("C:\\program\\Users.ser"))) {
+                while (true) {//Reads users from file and shows their members
+                    User user = (User) ois.readObject();
+                    Vector<String> vector = new Vector<String>();
+                    vector.add(Integer.toString(user.getDni()));
+                    vector.add(user.getName());
+                    vector.add(user.getSurname());
+                    vector.add(user.getBirth().toString());
+                    vector.add(user.getAddress());
+                    vector.add(Integer.toString(user.getPhone()));
+                    vector.add(user.getUsername());
+                    vector.add(user.getPassword());
+                    vector.add(user.getEmail());
+                    
+                    dm.addRow(vector);
+                }
+
+            } catch (FileNotFoundException ex) {
+                System.out.println("Can't find file (Probably there are no users saved)");
+            } catch (IOException ex) {
+
+            } catch (ClassNotFoundException ex) {
+            }
+
             sh.setVisible(true);
         }
     }
