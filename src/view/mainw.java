@@ -47,13 +47,13 @@ public class mainw extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setText("Search for a user");
+        jMenuItem2.setText("Show all users");
         jMenu1.add(jMenuItem2);
 
-        jMenuItem3.setText("Show all users");
+        jMenuItem3.setText("Delete a user");
         jMenu1.add(jMenuItem3);
 
-        jMenuItem4.setText("Delete a user");
+        jMenuItem4.setText("Search user");
         jMenu1.add(jMenuItem4);
 
         jMenuBar1.add(jMenu1);
@@ -71,7 +71,7 @@ public class mainw extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 263, Short.MAX_VALUE)
+            .addGap(0, 267, Short.MAX_VALUE)
         );
 
         pack();
@@ -93,6 +93,6 @@ public class mainw extends javax.swing.JFrame {
     public javax.swing.JMenuItem jMenuItem1;
     public javax.swing.JMenuItem jMenuItem2;
     public javax.swing.JMenuItem jMenuItem3;
-    public javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem4;
     // End of variables declaration//GEN-END:variables
 }

@@ -9,6 +9,7 @@ import controller.ctrl;
 import model.management;
 import view.adduser;
 import view.mainw;
+import view.show;
 
 /**
  *
@@ -19,17 +20,20 @@ public class WProject {
     management mng;
     mainw mw;
     adduser au;
+    show sh;
     ctrl ctrl;
-    
+
     public static void main(String[] args) {
         WProject main = new WProject();
         main.start();
     }
-    private void start(){
+
+    private void start() {
         mng = new management();
         mw = new mainw();
         au = new adduser();
-        ctrl = new ctrl(mw, au, mng);
+        sh = new show();
+        ctrl = new ctrl(mw, au, sh, mng);
         mw.setVisible(true);
     }
 }

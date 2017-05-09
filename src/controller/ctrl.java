@@ -10,14 +10,16 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import model.User;
 import model.management;
 import model.management.MiObjectOutputStream;
 import view.adduser;
 import view.mainw;
+import view.show;
 
 /**
  *
@@ -27,14 +29,17 @@ public class ctrl implements ActionListener {
 
     private mainw mw;
     private adduser au;
+    private show sh;
     private management mng = new management();
 
-    public ctrl(mainw mw, adduser au, management mng) {
+    public ctrl(mainw mw, adduser au, show sh, management mng) {
         this.mw = mw;
         this.au = au;
+        this.sh = sh;
         this.mng = mng;
         //Listeners
         this.mw.jMenuItem1.addActionListener(this);
+        this.mw.jMenuItem2.addActionListener(this);
         this.au.jButton1.addActionListener(this);
     }
 
@@ -54,17 +59,24 @@ public class ctrl implements ActionListener {
             user.setUsername(au.usernameTB.getText());
             user.setPassword(au.pwTB.getText());
             user.setEmail(au.emailTB.getText());
-            
-            
-            
+
             try (MiObjectOutputStream oos = new MiObjectOutputStream(new FileOutputStream("C:\\program\\Users.ser", true))) {
                 oos.writeObject(user);
                 JOptionPane.showMessageDialog(null, "User has been added", "Success", JOptionPane.INFORMATION_MESSAGE);
             } catch (FileNotFoundException ex) {
-  
+
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "There has been an error adding the user", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        } else if (e.getSource() == mw.jMenuItem2) {
+            DefaultTableModel dm = new DefaultTableModel(0, 0);
+            String s[] = new String[]{"DNI", "Name", "Surname", "Birth", "Address", "Phone", "Username", "Password", "Email"};
+            dm.setColumnIdentifiers(s);
+            sh.jTable1.setModel(dm);
+            Vector<String> vector = new Vector<String>();
+            vector.add("freafr");
+            dm.addRow(vector);
+            sh.setVisible(true);
         }
     }
 
