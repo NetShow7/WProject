@@ -8,7 +8,9 @@ package wproject;
 import controller.ctrl;
 import model.management;
 import view.adduser;
+import view.delete;
 import view.mainw;
+import view.search;
 import view.show;
 
 /**
@@ -21,6 +23,8 @@ public class WProject {
     mainw mw;
     adduser au;
     show sh;
+    search se;
+    delete del;
     ctrl ctrl;
 
     public static void main(String[] args) {
@@ -33,7 +37,9 @@ public class WProject {
         mw = new mainw();
         au = new adduser();
         sh = new show();
-        ctrl = new ctrl(mw, au, sh, mng);
+        se = new search();
+        del = new delete();
+        ctrl = new ctrl(mw, au, sh,se,del, mng);
         mw.setVisible(true);
     }
 }

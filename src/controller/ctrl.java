@@ -9,20 +9,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.User;
 import model.management;
 import model.management.MiObjectInputStream;
-import model.management.MiObjectOutputStream;
+import static model.management.searchUser;
+import static model.management.writeUser;
 import view.adduser;
+import view.delete;
 import view.mainw;
+import view.search;
 import view.show;
 
 /**
@@ -34,22 +33,33 @@ public class ctrl implements ActionListener {
     private mainw mw;
     private adduser au;
     private show sh;
+    private search se;
+    private delete del;
     private management mng = new management();
 
-    public ctrl(mainw mw, adduser au, show sh, management mng) {
+    public ctrl(mainw mw, adduser au, show sh, search se,delete del, management mng) {
         this.mw = mw;
         this.au = au;
         this.sh = sh;
+        this.se = se;
+        this.del = del;
         this.mng = mng;
         //Listeners
         this.mw.jMenuItem1.addActionListener(this);
         this.mw.jMenuItem2.addActionListener(this);
+        this.mw.jMenuItem3.addActionListener(this);
+        this.mw.jMenuItem4.addActionListener(this);
+        this.del.jButton1.addActionListener(this);
+        this.se.jButton1.addActionListener(this);
         this.au.jButton1.addActionListener(this);
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mw.jMenuItem1) {//Add new user menu item
             au.setVisible(true);
+        } else if (e.getSource() == mw.jMenuItem4) {
+            se.setVisible(true);
+
         } else if (e.getSource() == au.jButton1) { //add new user button
             User user = new User(); //Create new user
 
@@ -64,15 +74,8 @@ public class ctrl implements ActionListener {
             user.setPassword(au.pwTB.getText());
             user.setEmail(au.emailTB.getText());
 
-            try (MiObjectOutputStream oos = new MiObjectOutputStream(new FileOutputStream("C:\\program\\Users.ser", true))) {
-                oos.writeObject(user);
-                JOptionPane.showMessageDialog(null, "User has been added", "Success", JOptionPane.INFORMATION_MESSAGE);
-            } catch (FileNotFoundException ex) {
-
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "There has been an error adding the user", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else if (e.getSource() == mw.jMenuItem2) {
+            writeUser(user);
+        } else if (e.getSource() == mw.jMenuItem2) {//Show all the users
             DefaultTableModel dm = new DefaultTableModel(0, 0);
             String s[] = new String[]{"DNI", "Name", "Surname", "Birth", "Address", "Phone", "Username", "Password", "Email"};
             dm.setColumnIdentifiers(s);
@@ -92,7 +95,7 @@ public class ctrl implements ActionListener {
                     vector.add(user.getUsername());
                     vector.add(user.getPassword());
                     vector.add(user.getEmail());
-                    
+
                     dm.addRow(vector);
                 }
 
@@ -104,7 +107,35 @@ public class ctrl implements ActionListener {
             }
 
             sh.setVisible(true);
+        } else if (e.getSource() == se.jButton1) {//Search for a user
+            se.jLabel2.setVisible(false);
+            int dni = Integer.parseInt(se.jTextField1.getText());
+            User user = searchUser(dni, se);
+            if (user != null) {//Create table and show the user
+                DefaultTableModel dm = new DefaultTableModel(0, 0);
+                String s[] = new String[]{"DNI", "Name", "Surname", "Birth", "Address", "Phone", "Username", "Password", "Email"};
+                dm.setColumnIdentifiers(s);
+                se.jTable1.setModel(dm);
+                se.jTable1.setEnabled(false);
+                Vector<String> vector = new Vector<String>();
+                vector.add(Integer.toString(user.getDni()));
+                vector.add(user.getName());
+                vector.add(user.getSurname());
+                vector.add(user.getBirth().toString());
+                vector.add(user.getAddress());
+                vector.add(Integer.toString(user.getPhone()));
+                vector.add(user.getUsername());
+                vector.add(user.getPassword());
+                vector.add(user.getEmail());
+
+                dm.addRow(vector);
+            }else{
+                se.jLabel2.setText("Can't find user");
+                se.jLabel2.setVisible(true);
+            }
+
+        }else if (e.getSource() == del.jButton1) {
+            
         }
     }
-
 }

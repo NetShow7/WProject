@@ -93,6 +93,6 @@ public class mainw extends javax.swing.JFrame {
     public javax.swing.JMenuItem jMenuItem1;
     public javax.swing.JMenuItem jMenuItem2;
     public javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
+    public javax.swing.JMenuItem jMenuItem4;
     // End of variables declaration//GEN-END:variables
 }
