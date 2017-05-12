@@ -5,6 +5,9 @@
  */
 package model;
 
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,6 +17,8 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,31 +66,32 @@ public class management {
 
         }
     }
+//Connection
 
     public static User searchUser(int dni, search se) {
-
-        try (MiObjectInputStream ois = new MiObjectInputStream(new FileInputStream("C:\\program\\Users.ser"))) {
-
-            while (true) {//Reads users until finds the one we want to show
-
-                User user = (User) ois.readObject();
-                if (user.getDni() == dni) {//If it is the user to be shown enters here
-
-                    return user;
-                }
-            }
-
-        } catch (EOFException end) {
-            return null;
-        } catch (FileNotFoundException gaizki) {
-            se.jLabel2.setText("File not found");
-            se.jLabel2.setVisible(true);
-        } catch (IOException gaizki) {
-            System.out.println("Error: " + gaizki.toString());
-        } catch (ClassNotFoundException ex) {
-
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setUser("root");
+        dataSource.setPassword("");
+       dataSource.setDatabaseName("skydancer");
+        dataSource.setServerName("127.0.0.1");
+        Connection conn;
+        Statement stmt;
+         ResultSet rs;
+        try {
+            conn = (Connection) dataSource.getConnection();
+            stmt = (Statement) conn.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM USERS WHERE dni ="+dni);
+            User user = new User();
+            rs.next();
+            System.out.println(rs.getString("dni"));
+            user.setDni(Integer.parseInt(rs.getString(2)));
+        } catch (SQLException ex) {
+            Logger.getLogger(management.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+
+
+        
     }
 
     public static void deleteUser(int dni) {
