@@ -11,7 +11,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Vector;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.User;
 import model.management;
@@ -64,7 +63,7 @@ public class ctrl implements ActionListener {
             User user = new User(); //Create new user
 
             //Asign values to the user
-            user.setDni(Integer.parseInt(au.dniTB.getText()));
+            user.setDni(au.dniTB.getText());
             user.setName(au.nameTB.getText());
             user.setSurname(au.surnameTB.getText());
             user.setBirth(au.birthTB.getText());
@@ -86,7 +85,7 @@ public class ctrl implements ActionListener {
                 while (true) {//Reads users from file and shows their members
                     User user = (User) ois.readObject();
                     Vector<String> vector = new Vector<String>();
-                    vector.add(Integer.toString(user.getDni()));
+                    vector.add(user.getDni());
                     vector.add(user.getName());
                     vector.add(user.getSurname());
                     vector.add(user.getBirth().toString());
@@ -118,7 +117,7 @@ public class ctrl implements ActionListener {
                 se.jTable1.setModel(dm);
                 se.jTable1.setEnabled(false);
                 Vector<String> vector = new Vector<String>();
-                vector.add(Integer.toString(user.getDni()));
+                vector.add(user.getDni());
                 vector.add(user.getName());
                 vector.add(user.getSurname());
                 vector.add(user.getBirth().toString());

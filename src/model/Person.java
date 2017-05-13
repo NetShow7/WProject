@@ -9,7 +9,7 @@ import java.util.Locale;
 
 public class Person implements Serializable {
 
-    private int dni;
+    private String dni;
     private String name;
     private String surname;
     private LocalDate birth;
@@ -24,7 +24,7 @@ public class Person implements Serializable {
 
     }
 
-    public int getDni() {
+    public String getDni() {
         return dni;
     }
 
@@ -48,7 +48,7 @@ public class Person implements Serializable {
         return phone;
     }
 
-    public void setDni(int a) {
+    public void setDni(String a) {
         dni = a;
     }
 

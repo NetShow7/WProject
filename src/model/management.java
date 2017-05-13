@@ -72,19 +72,28 @@ public class management {
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setUser("root");
         dataSource.setPassword("");
-       dataSource.setDatabaseName("skydancer");
+        dataSource.setDatabaseName("skydancer");
         dataSource.setServerName("127.0.0.1");
         Connection conn;
         Statement stmt;
-         ResultSet rs;
+        ResultSet rs;
         try {
             conn = (Connection) dataSource.getConnection();
             stmt = (Statement) conn.createStatement();
             rs = stmt.executeQuery("SELECT * FROM USERS WHERE dni ="+dni);
             User user = new User();
             rs.next();
-            System.out.println(rs.getString("dni"));
-            user.setDni(Integer.parseInt(rs.getString(2)));
+            
+            user.setDni(rs.getString(2));
+            user.setName(rs.getString(3));
+            user.setSurname(rs.getString(4));
+            user.setBirth(rs.getString(5));
+            user.setAddress(rs.getString(6));
+            user.setPhone(rs.getInt(7));
+            user.setUsername(rs.getString(8));
+            user.setPassword(rs.getString(9));
+            user.setEmail(rs.getString(10));
+            return user;
         } catch (SQLException ex) {
             Logger.getLogger(management.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -94,7 +103,7 @@ public class management {
         
     }
 
-    public static void deleteUser(int dni) {
+    public static void deleteUser(String dni) {
         boolean aurkitua = false, exist = true;
         ArrayList<User> users = new ArrayList<>();//Arraylist for saving the users
 
