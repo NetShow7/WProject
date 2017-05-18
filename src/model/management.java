@@ -68,8 +68,9 @@ public class management {
     }
 //Connection
 
-    public static User searchUser(int dni, search se) {
+    public static User searchUser(String dni, search se) {
         MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setPort(3306);
         dataSource.setUser("root");
         dataSource.setPassword("");
         dataSource.setDatabaseName("skydancer");
@@ -80,10 +81,10 @@ public class management {
         try {
             conn = (Connection) dataSource.getConnection();
             stmt = (Statement) conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM USERS WHERE dni ="+dni);
+            rs = stmt.executeQuery("SELECT * FROM USERS WHERE dni =" + dni);
             User user = new User();
             rs.next();
-            
+
             user.setDni(rs.getString(2));
             user.setName(rs.getString(3));
             user.setSurname(rs.getString(4));
@@ -99,8 +100,6 @@ public class management {
         }
         return null;
 
-
-        
     }
 
     public static void deleteUser(String dni) {

@@ -108,7 +108,7 @@ public class ctrl implements ActionListener {
             sh.setVisible(true);
         } else if (e.getSource() == se.jButton1) {//Search for a user
             se.jLabel2.setVisible(false);
-            int dni = Integer.parseInt(se.jTextField1.getText());
+            String dni = se.jTextField1.getText();
             User user = searchUser(dni, se);
             if (user != null) {//Create table and show the user
                 DefaultTableModel dm = new DefaultTableModel(0, 0);

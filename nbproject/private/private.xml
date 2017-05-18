@@ -3,11 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Users/Eneko/Documents/NetBeansProjects/WProject/src/view/search.java</file>
-            <file>file:/D:/Users/Eneko/Documents/NetBeansProjects/WProject/src/model/Person.java</file>
-            <file>file:/D:/Users/Eneko/Documents/NetBeansProjects/WProject/src/model/management.java</file>
-            <file>file:/D:/Users/Eneko/Documents/NetBeansProjects/WProject/src/controller/ctrl.java</file>
-            <file>file:/D:/Users/Eneko/Documents/NetBeansProjects/WProject/src/model/User.java</file>
+            <file>file:/C:/Users/dm3-1-20/Documents/NetBeansProjects/WProject/src/model/User.java</file>
+            <file>file:/C:/Users/dm3-1-20/Documents/NetBeansProjects/WProject/src/controller/ctrl.java</file>
+            <file>file:/C:/Users/dm3-1-20/Documents/NetBeansProjects/WProject/src/view/search.java</file>
+            <file>file:/C:/Users/dm3-1-20/Documents/NetBeansProjects/WProject/src/view/show.java</file>
+            <file>file:/C:/Users/dm3-1-20/Documents/NetBeansProjects/WProject/src/model/management.java</file>
+            <file>file:/C:/Users/dm3-1-20/Documents/NetBeansProjects/WProject/src/view/adduser.java</file>
+            <file>file:/C:/Users/dm3-1-20/Documents/NetBeansProjects/WProject/src/view/delete.java</file>
+            <file>file:/C:/Users/dm3-1-20/Documents/NetBeansProjects/WProject/src/view/mainw.java</file>
+            <file>file:/C:/Users/dm3-1-20/Documents/NetBeansProjects/WProject/src/model/Person.java</file>
+            <file>file:/C:/Users/dm3-1-20/Documents/NetBeansProjects/WProject/src/wproject/WProject.java</file>
         </group>
     </open-files>
 </project-private>
