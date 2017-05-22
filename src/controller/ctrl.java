@@ -10,11 +10,14 @@ import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import model.User;
 import model.management;
 import model.management.MiObjectInputStream;
+import static model.management.getUsers;
 import static model.management.searchUser;
 import static model.management.writeUser;
 import view.adduser;
@@ -80,29 +83,25 @@ public class ctrl implements ActionListener {
             dm.setColumnIdentifiers(s);
             sh.jTable1.setModel(dm);
             sh.jTable1.setEnabled(false);
+            List<User> users = getUsers();
+            
 
-            try (MiObjectInputStream ois = new MiObjectInputStream(new FileInputStream("C:\\program\\Users.ser"))) {
-                while (true) {//Reads users from file and shows their members
-                    User user = (User) ois.readObject();
-                    Vector<String> vector = new Vector<String>();
-                    vector.add(user.getDni());
-                    vector.add(user.getName());
-                    vector.add(user.getSurname());
-                    vector.add(user.getBirth().toString());
-                    vector.add(user.getAddress());
-                    vector.add(Integer.toString(user.getPhone()));
-                    vector.add(user.getUsername());
-                    vector.add(user.getPassword());
-                    vector.add(user.getEmail());
-
-                    dm.addRow(vector);
-                }
-
-            } catch (FileNotFoundException ex) {
-                System.out.println("Can't find file (Probably there are no users saved)");
-            } catch (IOException ex) {
-
-            } catch (ClassNotFoundException ex) {
+            for (int i = 0; i < users.size(); i++) {
+                
+                
+                
+                Vector<String> vector = new Vector<>();
+                vector.add(users.get(i).getDni());
+                vector.add(users.get(i).getName());
+                vector.add(users.get(i).getSurname());
+                vector.add(users.get(i).getBirth().toString());
+                vector.add(users.get(i).getAddress());
+                vector.add(Integer.toString(users.get(i).getPhone()));
+                vector.add(users.get(i).getUsername());
+                vector.add(users.get(i).getPassword());
+                vector.add(users.get(i).getEmail());
+                
+                dm.addRow(vector);
             }
 
             sh.setVisible(true);

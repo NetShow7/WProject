@@ -20,6 +20,7 @@ import java.io.OutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -32,41 +33,25 @@ import view.search;
 public class management {
 
     public static void writeUser(User us) {
-        boolean exist = false;
-        try (MiObjectInputStream ois = new MiObjectInputStream(new FileInputStream("C:\\program\\Users.ser"))) {
-            while (!exist) {//Reads users from file and checks if exists
-                User user2 = (User) ois.readObject();
-                if (us.getDni() == user2.getDni()) {
-                    exist = true;
-                }
-
-            }
-
-        } catch (FileNotFoundException ex) {
-
-        } catch (IOException ex) {
-
-        } catch (ClassNotFoundException ex) {
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setPort(3306);
+        dataSource.setUser("root");
+        dataSource.setPassword("");
+        dataSource.setDatabaseName("skydancer");
+        dataSource.setServerName("127.0.0.1");
+        Connection conn;
+        Statement stmt;
+        ResultSet rs;
+        try {
+            conn = (Connection) dataSource.getConnection();
+            stmt = (Statement) conn.createStatement();
+            //rs = stmt.executeQuery("INSERT INTO USERS (dni,name,surname,birth,address,phone,username,passwd,email) VALUES ('"+us.getDni()+"','"+us.getName()+"','"+us.getSurname()+"','"+us.getBirth()+"','"+us.getAddress()+"',"+us.getPhone()+",'"+us.getUsername()+"','"+us.getPassword()+"','"+us.getEmail()+"')");
+            stmt.execute("INSERT INTO USERS (dni,name,surname,birth,address,phone,username,passwd,email) VALUES ('" + us.getDni() + "','" + us.getName() + "','" + us.getSurname() + "','" + us.getBirth() + "','" + us.getAddress() + "'," + us.getPhone() + ",'" + us.getUsername() + "','" + us.getPassword() + "','" + us.getEmail() + "')");
+        } catch (SQLException ex) {
             Logger.getLogger(management.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (!exist) {
 
-            try (MiObjectOutputStream oos = new MiObjectOutputStream(new FileOutputStream("C:\\program\\Users.ser", true))) {
-                oos.writeObject(us);
-                JOptionPane.showMessageDialog(null, "User has been added", "Success", JOptionPane.INFORMATION_MESSAGE);
-            } catch (FileNotFoundException ex) {
-                JOptionPane.showMessageDialog(null, "There has been an error adding the user", "Error", JOptionPane.ERROR_MESSAGE);
-
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "There has been an error adding the user", "Error", JOptionPane.ERROR_MESSAGE);
-
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "User already exist", "Warning", JOptionPane.WARNING_MESSAGE);
-
-        }
     }
-//Connection
 
     public static User searchUser(String dni, search se) {
         MysqlDataSource dataSource = new MysqlDataSource();
@@ -81,7 +66,7 @@ public class management {
         try {
             conn = (Connection) dataSource.getConnection();
             stmt = (Statement) conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM USERS WHERE dni =" + dni);
+            rs = stmt.executeQuery("SELECT * FROM USERS WHERE dni = '" + dni + "'");
             User user = new User();
             rs.next();
 
@@ -95,6 +80,45 @@ public class management {
             user.setPassword(rs.getString(9));
             user.setEmail(rs.getString(10));
             return user;
+        } catch (SQLException ex) {
+            Logger.getLogger(management.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+
+    }
+
+    public static ArrayList<User> getUsers() {
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setPort(3306);
+        dataSource.setUser("root");
+        dataSource.setPassword("");
+        dataSource.setDatabaseName("skydancer");
+        dataSource.setServerName("127.0.0.1");
+
+        ArrayList<User> users = new ArrayList<>();
+        
+        Connection conn;
+        Statement stmt;
+        ResultSet rs;
+        try {
+            conn = (Connection) dataSource.getConnection();
+            stmt = (Statement) conn.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM USERS");
+            
+            while(rs.next()){
+                User user = new User();
+            user.setDni(rs.getString(2));
+            user.setName(rs.getString(3));
+            user.setSurname(rs.getString(4));
+            user.setBirth(rs.getString(5));
+            user.setAddress(rs.getString(6));
+            user.setPhone(rs.getInt(7));
+            user.setUsername(rs.getString(8));
+            user.setPassword(rs.getString(9));
+            user.setEmail(rs.getString(10));
+            users.add(user);
+            }
+            return users;
         } catch (SQLException ex) {
             Logger.getLogger(management.class.getName()).log(Level.SEVERE, null, ex);
         }
