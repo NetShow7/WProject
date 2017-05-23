@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-05-2017 a las 13:58:12
+-- Tiempo de generación: 23-05-2017 a las 20:21:06
 -- Versión del servidor: 10.1.21-MariaDB
--- Versión de PHP: 5.6.30
+-- Versión de PHP: 7.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -40,17 +40,6 @@ CREATE TABLE `flights` (
   `photo` varchar(150) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `flights`
---
-
-INSERT INTO `flights` (`id`, `duration`, `origin`, `destination`, `pilot1`, `pilot2`, `tickets`, `tickets_sold`, `fdate`, `price`, `photo`) VALUES
-(0, 41, 'dwqf', 'rewgwe', 'grewgrew4', 'grw', 6, 5, '2017-05-12', 500, '../img/flightpics/03 - JPT5dX0.jpg'),
-(1, 300, 'Madrid', 'Hogwarts', 'Eneko', 'Paco', 300, 240, '2017-04-27', 50, ''),
-(2, 221, 'Bilbao', 'Paris', 'Jokin', 'Naroa', 70, 55, '2017-04-29', 77, ''),
-(44, 342, 'dasd', 'gregre', 'ghhg', 'gfdgfd', 456, 123, '2017-03-06', 70, ''),
-(777, 24, 'China', 'Japon', 'Manuel', 'IÃ±aki', 300, 50, '2017-07-03', 30, '');
-
 -- --------------------------------------------------------
 
 --
@@ -67,16 +56,16 @@ CREATE TABLE `users` (
   `phone` int(9) DEFAULT NULL,
   `username` varchar(15) DEFAULT NULL,
   `passwd` varchar(512) DEFAULT NULL,
-  `email` varchar(50) DEFAULT NULL
+  `email` varchar(50) DEFAULT NULL,
+  `isAdmin` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `dni`, `name`, `surname`, `birth`, `address`, `phone`, `username`, `passwd`, `email`) VALUES
-(1, '12345678A', 'Eneko', 'Perez', '2017-04-21', 'Calle', 123456789, 'NetShow', '1234', 'zerbait@gmail.com'),
-(2, 'Petxa', 'Petxa', 'Petxa', '0002-02-02', 'Petxa', 3, 'Petxa', 'Petxa', 'Petxa');
+INSERT INTO `users` (`id`, `dni`, `name`, `surname`, `birth`, `address`, `phone`, `username`, `passwd`, `email`, `isAdmin`) VALUES
+(3, '74628523G', 'Jokin', 'Iñurrieta', '1995-06-03', 'Yes street', 943726384, 'Jokin_335', 'bestpasswordever1', 'jokininu@gmail.com', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -102,10 +91,15 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `flights`
+--
+ALTER TABLE `flights`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
