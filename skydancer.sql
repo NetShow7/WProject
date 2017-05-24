@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-05-2017 a las 20:21:06
+-- Tiempo de generación: 24-05-2017 a las 13:27:46
 -- Versión del servidor: 10.1.21-MariaDB
--- Versión de PHP: 7.1.1
+-- Versión de PHP: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -38,6 +38,18 @@ CREATE TABLE `flights` (
   `fdate` date DEFAULT NULL,
   `price` float DEFAULT NULL,
   `photo` varchar(150) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reservations`
+--
+
+CREATE TABLE `reservations` (
+  `id` int(4) NOT NULL,
+  `f_id` int(4) NOT NULL,
+  `u_id` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -78,6 +90,14 @@ ALTER TABLE `flights`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `reservations`
+--
+ALTER TABLE `reservations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userFK` (`u_id`),
+  ADD KEY `flightFK` (`f_id`);
+
+--
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
@@ -96,10 +116,26 @@ ALTER TABLE `users`
 ALTER TABLE `flights`
   MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT de la tabla `reservations`
+--
+ALTER TABLE `reservations`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `reservations`
+--
+ALTER TABLE `reservations`
+  ADD CONSTRAINT `flightFK` FOREIGN KEY (`f_id`) REFERENCES `flights` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `userFK` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

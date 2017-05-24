@@ -8,10 +8,11 @@ package wproject;
 import controller.ctrl;
 import model.management;
 import view.adduser;
-import view.delete;
+import view.DeleteUser;
 import view.mainw;
-import view.search;
-import view.show;
+import view.SearchUser;
+import view.ShowUsers;
+import view.addres;
 
 /**
  *
@@ -22,10 +23,11 @@ public class WProject {
     management mng;
     mainw mw;
     adduser au;
-    show sh;
-    search se;
-    delete del;
+    ShowUsers sh;
+    SearchUser se;
+    DeleteUser del;
     ctrl ctrl;
+    addres ar;
 
     public static void main(String[] args) {
         WProject main = new WProject();
@@ -36,10 +38,11 @@ public class WProject {
         mng = new management();
         mw = new mainw();
         au = new adduser();
-        sh = new show();
-        se = new search();
-        del = new delete();
-        ctrl = new ctrl(mw, au, sh,se,del, mng);
+        sh = new ShowUsers();
+        se = new SearchUser();
+        del = new DeleteUser();
+        ar = new addres();
+        ctrl = new ctrl(mw, au, sh,se,del, mng,ar);
         mw.setVisible(true);
     }
 }

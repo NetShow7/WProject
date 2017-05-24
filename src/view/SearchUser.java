@@ -9,12 +9,12 @@ package view;
  *
  * @author DM3-1-20
  */
-public class search extends javax.swing.JFrame {
+public class SearchUser extends javax.swing.JFrame {
 
     /**
      * Creates new form search
      */
-    public search() {
+    public SearchUser() {
         initComponents();
     }
 

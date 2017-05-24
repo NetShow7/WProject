@@ -9,12 +9,12 @@ package view;
  *
  * @author DM3-1-20
  */
-public class show extends javax.swing.JFrame {
+public class ShowUsers extends javax.swing.JFrame {
 
     /**
      * Creates new form show
      */
-    public show() {
+    public ShowUsers() {
         initComponents();
     }
 

@@ -30,67 +30,74 @@ public class mainw extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel(new ImageIcon("img\\fly.png"));
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        mwmenubar = new javax.swing.JMenuBar();
+        usermenu = new javax.swing.JMenu();
+        adduser = new javax.swing.JMenuItem();
+        showusers = new javax.swing.JMenuItem();
+        deleteuser = new javax.swing.JMenuItem();
+        searchuser = new javax.swing.JMenuItem();
+        flightmenu = new javax.swing.JMenu();
+        resmenu = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Skydancer manager");
         setIconImage(new ImageIcon("img\\icon.jpg").getImage());
 
-        jMenu1.setText("Users");
+        usermenu.setText("Users");
 
-        jMenuItem1.setText("Add new user");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        adduser.setText("Add new user");
+        adduser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                adduserActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        usermenu.add(adduser);
 
-        jMenuItem2.setText("Show all users");
-        jMenu1.add(jMenuItem2);
+        showusers.setText("Show all users");
+        usermenu.add(showusers);
 
-        jMenuItem3.setText("Delete a user");
-        jMenu1.add(jMenuItem3);
+        deleteuser.setText("Delete a user");
+        usermenu.add(deleteuser);
 
-        jMenuItem4.setText("Search user");
-        jMenu1.add(jMenuItem4);
+        searchuser.setText("Search user");
+        usermenu.add(searchuser);
 
-        jMenuBar1.add(jMenu1);
+        mwmenubar.add(usermenu);
 
-        jMenu2.setText("Flights");
-        jMenuBar1.add(jMenu2);
+        flightmenu.setText("Flights");
+        mwmenubar.add(flightmenu);
 
-        setJMenuBar(jMenuBar1);
+        resmenu.setText("Reservations");
+
+        jMenuItem5.setText("Check reservation");
+        resmenu.add(jMenuItem5);
+
+        jMenuItem6.setText("Show all reservations");
+        resmenu.add(jMenuItem6);
+
+        mwmenubar.add(resmenu);
+
+        setJMenuBar(mwmenubar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void adduserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adduserActionPerformed
         
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_adduserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -98,13 +105,16 @@ public class mainw extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JMenuItem adduser;
+    public javax.swing.JMenuItem deleteuser;
+    private javax.swing.JMenu flightmenu;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    public javax.swing.JMenuItem jMenuItem1;
-    public javax.swing.JMenuItem jMenuItem2;
-    public javax.swing.JMenuItem jMenuItem3;
-    public javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuBar mwmenubar;
+    private javax.swing.JMenu resmenu;
+    public javax.swing.JMenuItem searchuser;
+    public javax.swing.JMenuItem showusers;
+    private javax.swing.JMenu usermenu;
     // End of variables declaration//GEN-END:variables
 }
