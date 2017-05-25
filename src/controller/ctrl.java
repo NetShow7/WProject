@@ -11,9 +11,11 @@ import java.util.List;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.Flight;
 import model.User;
 import model.management;
 import static model.management.deleteUser;
+import static model.management.getFlights;
 import static model.management.getUsers;
 import static model.management.searchUser;
 import static model.management.validateUser;
@@ -52,6 +54,7 @@ public class ctrl implements ActionListener {
         this.mw.showusers.addActionListener(this);
         this.mw.deleteuser.addActionListener(this);
         this.mw.searchuser.addActionListener(this);
+        this.mw.newres.addActionListener(this);
         this.del_u.jButton1.addActionListener(this);//Delete button
         this.search_u.jButton1.addActionListener(this);//Search button
         this.add_u.jButton1.addActionListener(this);//Add button
@@ -113,10 +116,36 @@ public class ctrl implements ActionListener {
             //At this point we have the table filled
 
             del_u.setVisible(true);
-        } else if (e.getSource() == mw.searchuser) {
+        } else if (e.getSource() == mw.searchuser) {//Search user
             search_u.setVisible(true);
 
-        } else if (e.getSource() == add_u.jButton1) { //add new user button
+        }else if (e.getSource() == mw.newres) {
+            DefaultTableModel dm = new DefaultTableModel(0, 0);
+            String s[] = new String[]{"ID", "Duration (min)", "Origin", "Destination", "First pilot", "Second pilot", "Available seats", "Date", "Price (€)"};
+            dm.setColumnIdentifiers(s);
+            ar.jTable1.setModel(dm);
+            ar.jTable1.setEnabled(true);
+            List<Flight> flights = getFlights();
+            for (int i = 0; i < flights.size(); i++) {
+
+                Vector<String> vector = new Vector<>();
+
+                vector.add(Integer.toString(flights.get(i).getFlightid()));
+                vector.add(Integer.toString(flights.get(i).getDuration()));
+                vector.add(flights.get(i).getOrigin());
+                vector.add(flights.get(i).getDestination());
+                vector.add(flights.get(i).getPilot1());
+                vector.add(flights.get(i).getPilot2());
+                vector.add(Integer.toString(flights.get(i).getTickets() - flights.get(i).getTickets_sold()));
+                vector.add(flights.get(i).getDate().toString());
+                vector.add(Float.toString(flights.get(i).getPrice()));
+
+                dm.addRow(vector);
+            }
+            ar.setVisible(true);
+        } 
+        
+        else if (e.getSource() == add_u.jButton1) { //add new user button
 
             if (validateUser(add_u)) {
 
@@ -131,13 +160,10 @@ public class ctrl implements ActionListener {
                 user.setUsername(add_u.usernameTB.getText());
                 user.setPassword(add_u.pwTB.getText());
                 user.setEmail(add_u.emailTB.getText());
-                JOptionPane.showMessageDialog(null,
-                        "There has been an error with the DB.",
-                        "Success",
-                        JOptionPane.INFORMATION_MESSAGE);
+                
                 writeUser(user);
             }
-        } else if (e.getSource() == search_u.jButton1) {//Search for a user
+        } else if (e.getSource() == search_u.jButton1) {//Search for a user button
             search_u.jLabel2.setVisible(false);
             String dni = search_u.jTextField1.getText();
             User user = searchUser(dni);
@@ -164,7 +190,11 @@ public class ctrl implements ActionListener {
                 search_u.jLabel2.setVisible(true);
             }
 
-        } else if (e.getSource() == del_u.jButton1) {
+        } 
+        
+        
+        
+        else if (e.getSource() == del_u.jButton1) {
             if (del_u.jTable1.getSelectionModel().isSelectionEmpty()) {
                 JOptionPane.showMessageDialog(null,
                         "You must select one row",
@@ -179,11 +209,14 @@ public class ctrl implements ActionListener {
                 dm.removeRow(selectedRow);
                 del_u.jTable1.setModel(dm);
             }
-        }else if (e.getSource() == ar.jButton1) {//Reservation button
+        } else if (e.getSource() == ar.jButton1) {//Reservation button
+            
+
             String un = ar.jTextField1.getText();
             String pw = new String(ar.jPasswordField1.getPassword());
-            
+            int f_id = (int) ar.jTable1.getValueAt(ar.jTable1.getSelectedRow(), 1);
+
         }
-        
+
     }
 }

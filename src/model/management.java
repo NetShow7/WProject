@@ -47,6 +47,10 @@ public class management {
             stmt = (Statement) conn.createStatement();
             //rs = stmt.executeQuery("INSERT INTO USERS (dni,name,surname,birth,address,phone,username,passwd,email) VALUES ('"+us.getDni()+"','"+us.getName()+"','"+us.getSurname()+"','"+us.getBirth()+"','"+us.getAddress()+"',"+us.getPhone()+",'"+us.getUsername()+"','"+us.getPassword()+"','"+us.getEmail()+"')");
             stmt.execute("INSERT INTO USERS (dni,name,surname,birth,address,phone,username,passwd,email) VALUES ('" + us.getDni() + "','" + us.getName() + "','" + us.getSurname() + "','" + us.getBirth() + "','" + us.getAddress() + "'," + us.getPhone() + ",'" + us.getUsername() + "','" + us.getPassword() + "','" + us.getEmail() + "')");
+            JOptionPane.showMessageDialog(null,
+                        "User successfully added.",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null,
                     "There has been an error with the DB.",
@@ -130,6 +134,50 @@ public class management {
         }
         return null;
 
+    }
+    
+    public static ArrayList<Flight> getFlights(){
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setPort(3306);
+        dataSource.setUser("root");
+        dataSource.setPassword("");
+        dataSource.setDatabaseName("skydancer");
+        dataSource.setServerName("127.0.0.1");
+
+        ArrayList<Flight> flights = new ArrayList<>();
+        
+
+
+        Connection conn;
+        Statement stmt;
+        ResultSet rs;
+        try {
+            conn = (Connection) dataSource.getConnection();
+            stmt = (Statement) conn.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM FLIGHTS");
+
+            while (rs.next()) {
+                Flight flight = new Flight();
+                flight.setFlightid(Integer.parseInt(rs.getString(1)));
+                flight.setDuration(Integer.parseInt(rs.getString(2)));
+                flight.setOrigin(rs.getString(3));
+                flight.setDestination(rs.getString(4));
+                flight.setPilot1(rs.getString(5));
+                flight.setPilot2(rs.getString(6));
+                flight.setTickets(Integer.parseInt(rs.getString(7)));
+                flight.setTickets_sold(Integer.parseInt(rs.getString(8)));
+                flight.setDate(rs.getString(9));
+                flight.setPrice(Float.parseFloat(rs.getString(10)));
+                flights.add(flight);
+            }
+            return flights;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,
+                    "There has been an error with the DB.",
+                    "Can't show flights",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
     }
 
     public static void deleteUser(String dni) {
@@ -270,6 +318,43 @@ public class management {
 
     }
 
+    public static void Reserve(String usern, String passwd, int f_id){
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setPort(3306);
+        dataSource.setUser("root");
+        dataSource.setPassword("");
+        dataSource.setDatabaseName("skydancer");
+        dataSource.setServerName("127.0.0.1");
+
+        
+
+        Connection conn;
+        Statement stmt;
+        ResultSet rs;
+        try {
+            conn = (Connection) dataSource.getConnection();
+            stmt = (Statement) conn.createStatement();
+            rs = stmt.executeQuery("SELECT id,passwd FROM USERS WHERE username='"+usern+"'");
+            rs.next();
+            if (passwd.equals(rs.getString(2))) {
+                stmt.execute("INSERT INTO RESERVATIONS(f_id,u_id) VALUES ("+f_id+","+rs.getString(1));
+                JOptionPane.showMessageDialog(null,
+                        "Reservation successfully made.",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+            
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,
+                    "There has been an error with the DB.",
+                    "Can't make a reserve.",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    
+    
     public static class MiObjectInputStream extends ObjectInputStream {
 
         public MiObjectInputStream(ObjectInputStream out) throws IOException {

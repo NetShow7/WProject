@@ -38,8 +38,9 @@ public class mainw extends javax.swing.JFrame {
         searchuser = new javax.swing.JMenuItem();
         flightmenu = new javax.swing.JMenu();
         resmenu = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        checkres = new javax.swing.JMenuItem();
+        showres = new javax.swing.JMenuItem();
+        newres = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Skydancer manager");
@@ -71,11 +72,14 @@ public class mainw extends javax.swing.JFrame {
 
         resmenu.setText("Reservations");
 
-        jMenuItem5.setText("Check reservation");
-        resmenu.add(jMenuItem5);
+        checkres.setText("Check reservation");
+        resmenu.add(checkres);
 
-        jMenuItem6.setText("Show all reservations");
-        resmenu.add(jMenuItem6);
+        showres.setText("Show all reservations");
+        resmenu.add(showres);
+
+        newres.setText("Add new reservation");
+        resmenu.add(newres);
 
         mwmenubar.add(resmenu);
 
@@ -106,14 +110,15 @@ public class mainw extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem adduser;
+    public javax.swing.JMenuItem checkres;
     public javax.swing.JMenuItem deleteuser;
     private javax.swing.JMenu flightmenu;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuBar mwmenubar;
-    private javax.swing.JMenu resmenu;
+    public javax.swing.JMenuItem newres;
+    public javax.swing.JMenu resmenu;
     public javax.swing.JMenuItem searchuser;
+    public javax.swing.JMenuItem showres;
     public javax.swing.JMenuItem showusers;
     private javax.swing.JMenu usermenu;
     // End of variables declaration//GEN-END:variables
