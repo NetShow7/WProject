@@ -17,6 +17,7 @@ import model.management;
 import static model.management.deleteUser;
 import static model.management.getFlights;
 import static model.management.getUsers;
+import static model.management.reserve;
 import static model.management.searchUser;
 import static model.management.validateUser;
 import static model.management.writeUser;
@@ -214,8 +215,9 @@ public class ctrl implements ActionListener {
 
             String un = ar.jTextField1.getText();
             String pw = new String(ar.jPasswordField1.getPassword());
-            int f_id = (int) ar.jTable1.getValueAt(ar.jTable1.getSelectedRow(), 1);
-
+            String id =  (String) ar.jTable1.getValueAt(ar.jTable1.getSelectedRow(), 0);
+            int f_id = Integer.parseInt(id);
+            reserve(un,pw,f_id);
         }
 
     }

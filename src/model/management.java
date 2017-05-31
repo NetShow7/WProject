@@ -318,7 +318,7 @@ public class management {
 
     }
 
-    public static void Reserve(String usern, String passwd, int f_id){
+    public static void reserve(String usern, String passwd, int f_id){
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setPort(3306);
         dataSource.setUser("root");
@@ -337,7 +337,7 @@ public class management {
             rs = stmt.executeQuery("SELECT id,passwd FROM USERS WHERE username='"+usern+"'");
             rs.next();
             if (passwd.equals(rs.getString(2))) {
-                stmt.execute("INSERT INTO RESERVATIONS(f_id,u_id) VALUES ("+f_id+","+rs.getString(1));
+                stmt.execute("INSERT INTO RESERVATIONS(f_id,u_id) VALUES ("+f_id+","+rs.getString(1)+")");
                 JOptionPane.showMessageDialog(null,
                         "Reservation successfully made.",
                         "Success",
