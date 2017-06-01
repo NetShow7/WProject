@@ -20,11 +20,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import view.adduser;
-import view.SearchUser;
+import view.AddUser;
 
 /**
  *
@@ -48,9 +45,9 @@ public class management {
             //rs = stmt.executeQuery("INSERT INTO USERS (dni,name,surname,birth,address,phone,username,passwd,email) VALUES ('"+us.getDni()+"','"+us.getName()+"','"+us.getSurname()+"','"+us.getBirth()+"','"+us.getAddress()+"',"+us.getPhone()+",'"+us.getUsername()+"','"+us.getPassword()+"','"+us.getEmail()+"')");
             stmt.execute("INSERT INTO USERS (dni,name,surname,birth,address,phone,username,passwd,email) VALUES ('" + us.getDni() + "','" + us.getName() + "','" + us.getSurname() + "','" + us.getBirth() + "','" + us.getAddress() + "'," + us.getPhone() + ",'" + us.getUsername() + "','" + us.getPassword() + "','" + us.getEmail() + "')");
             JOptionPane.showMessageDialog(null,
-                        "User successfully added.",
-                        "Success",
-                        JOptionPane.INFORMATION_MESSAGE);
+                    "User successfully added.",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null,
                     "There has been an error with the DB.",
@@ -88,7 +85,7 @@ public class management {
             user.setEmail(rs.getString(10));
             return user;
         } catch (SQLException ex) {
-            
+
         }
         return null;
 
@@ -135,8 +132,8 @@ public class management {
         return null;
 
     }
-    
-    public static ArrayList<Flight> getFlights(){
+
+    public static ArrayList<Flight> getFlights() {
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setPort(3306);
         dataSource.setUser("root");
@@ -145,8 +142,6 @@ public class management {
         dataSource.setServerName("127.0.0.1");
 
         ArrayList<Flight> flights = new ArrayList<>();
-        
-
 
         Connection conn;
         Statement stmt;
@@ -168,6 +163,45 @@ public class management {
                 flight.setTickets_sold(Integer.parseInt(rs.getString(8)));
                 flight.setDate(rs.getString(9));
                 flight.setPrice(Float.parseFloat(rs.getString(10)));
+                flights.add(flight);
+            }
+            return flights;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,
+                    "There has been an error with the DB.",
+                    "Can't show flights",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
+    }
+
+    public static ArrayList<Flight> getRess() {
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setPort(3306);
+        dataSource.setUser("root");
+        dataSource.setPassword("");
+        dataSource.setDatabaseName("skydancer");
+        dataSource.setServerName("127.0.0.1");
+
+        ArrayList<Flight> flights = new ArrayList<>();
+
+        Connection conn;
+        Statement stmt;
+        ResultSet rs;
+        try {
+            conn = (Connection) dataSource.getConnection();
+            stmt = (Statement) conn.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM FLIGHTS INNER JOIN RESERVATION ON FLIGHTS.id = RESERVATION.f_id WHERE u_id=");
+
+            while (rs.next()) {
+                Flight flight = new Flight();
+                flight.setFlightid(Integer.parseInt(rs.getString(1)));
+
+                flight.setOrigin(rs.getString(3));
+                flight.setDestination(rs.getString(4));
+
+                flight.setDate(rs.getString(9));
+
                 flights.add(flight);
             }
             return flights;
@@ -207,7 +241,7 @@ public class management {
         }
     }
 
-    public static boolean validateUser(adduser au) {
+    public static boolean validateUser(AddUser au) {
         String dni = au.dniTB.getText();
         List<String> errors = new ArrayList<String>();
 
@@ -318,7 +352,7 @@ public class management {
 
     }
 
-    public static void reserve(String usern, String passwd, int f_id){
+    public static void reserve(String usern, String passwd, int f_id) {
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setPort(3306);
         dataSource.setUser("root");
@@ -326,25 +360,22 @@ public class management {
         dataSource.setDatabaseName("skydancer");
         dataSource.setServerName("127.0.0.1");
 
-        
-
         Connection conn;
         Statement stmt;
         ResultSet rs;
         try {
             conn = (Connection) dataSource.getConnection();
             stmt = (Statement) conn.createStatement();
-            rs = stmt.executeQuery("SELECT id,passwd FROM USERS WHERE username='"+usern+"'");
+            rs = stmt.executeQuery("SELECT id,passwd FROM USERS WHERE username='" + usern + "'");
             rs.next();
             if (passwd.equals(rs.getString(2))) {
-                stmt.execute("INSERT INTO RESERVATIONS(f_id,u_id) VALUES ("+f_id+","+rs.getString(1)+")");
+                stmt.execute("INSERT INTO RESERVATIONS(f_id,u_id) VALUES (" + f_id + "," + rs.getString(1) + ")");
                 JOptionPane.showMessageDialog(null,
                         "Reservation successfully made.",
                         "Success",
                         JOptionPane.INFORMATION_MESSAGE);
             }
-            
-            
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null,
                     "There has been an error with the DB.",
@@ -352,9 +383,7 @@ public class management {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    
-    
+
     public static class MiObjectInputStream extends ObjectInputStream {
 
         public MiObjectInputStream(ObjectInputStream out) throws IOException {

@@ -7,12 +7,13 @@ package wproject;
 
 import controller.ctrl;
 import model.management;
-import view.adduser;
+import view.AddUser;
 import view.DeleteUser;
-import view.mainw;
+import view.MainWindow;
 import view.SearchUser;
 import view.ShowUsers;
-import view.addres;
+import view.AddRes;
+import view.ShowRes;
 
 /**
  *
@@ -21,13 +22,14 @@ import view.addres;
 public class WProject {
 
     management mng;
-    mainw mw;
-    adduser au;
+    MainWindow mw;
+    AddUser au;
     ShowUsers sh;
     SearchUser se;
     DeleteUser del;
     ctrl ctrl;
-    addres ar;
+    AddRes ar;
+    ShowRes sr;
 
     public static void main(String[] args) {
         WProject main = new WProject();
@@ -36,13 +38,13 @@ public class WProject {
 
     private void start() {
         mng = new management();
-        mw = new mainw();
-        au = new adduser();
+        mw = new MainWindow();
+        au = new AddUser();
         sh = new ShowUsers();
         se = new SearchUser();
         del = new DeleteUser();
-        ar = new addres();
-        ctrl = new ctrl(mw, au, sh,se,del, mng,ar);
+        ar = new AddRes();
+        ctrl = new ctrl(mw, au, sh,se,del, mng,ar,sr);
         mw.setVisible(true);
     }
 }

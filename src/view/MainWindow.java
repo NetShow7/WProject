@@ -11,12 +11,12 @@ import javax.swing.ImageIcon;
  *
  * @author DM3-1-20
  */
-public class mainw extends javax.swing.JFrame {
+public class MainWindow extends javax.swing.JFrame {
 
     /**
      * Creates new form mainw
      */
-    public mainw() {
+    public MainWindow() {
         initComponents();
     }
 

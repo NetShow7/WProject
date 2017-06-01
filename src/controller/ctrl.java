@@ -16,17 +16,19 @@ import model.User;
 import model.management;
 import static model.management.deleteUser;
 import static model.management.getFlights;
+import static model.management.getRess;
 import static model.management.getUsers;
 import static model.management.reserve;
 import static model.management.searchUser;
 import static model.management.validateUser;
 import static model.management.writeUser;
-import view.adduser;
+import view.AddUser;
 import view.DeleteUser;
-import view.mainw;
+import view.MainWindow;
 import view.SearchUser;
 import view.ShowUsers;
-import view.addres;
+import view.AddRes;
+import view.ShowRes;
 
 /**
  *
@@ -34,38 +36,43 @@ import view.addres;
  */
 public class ctrl implements ActionListener {
 
-    private mainw mw;
-    private adduser add_u;
+    private MainWindow mainw;
+    private AddUser add_u;
     private ShowUsers show_u;
     private SearchUser search_u;
     private DeleteUser del_u;
-    private addres ar;
+    private AddRes add_r;
+    private ShowRes show_r;
     private management mng = new management();
 
-    public ctrl(mainw mw, adduser au, ShowUsers sh, SearchUser se, DeleteUser del, management mng, addres ar) {
-        this.mw = mw;
+    public ctrl(MainWindow mw, AddUser au, ShowUsers sh, SearchUser se, DeleteUser del, management mngt, AddRes ar, ShowRes sr) {
+        mainw = mw;
         add_u = au;
         show_u = sh;
         search_u = se;
         del_u = del;
-        this.mng = mng;
-        this.ar = ar;
+        mng = mngt;
+        add_r = ar;
+        show_r = sr;
         //Listeners
-        this.mw.adduser.addActionListener(this);
-        this.mw.showusers.addActionListener(this);
-        this.mw.deleteuser.addActionListener(this);
-        this.mw.searchuser.addActionListener(this);
-        this.mw.newres.addActionListener(this);
-        this.del_u.jButton1.addActionListener(this);//Delete button
-        this.search_u.jButton1.addActionListener(this);//Search button
-        this.add_u.jButton1.addActionListener(this);//Add button
-        this.ar.jButton1.addActionListener(this);//Make reservation button
+        mainw.adduser.addActionListener(this);
+        mainw.showusers.addActionListener(this);
+        mainw.deleteuser.addActionListener(this);
+        mainw.searchuser.addActionListener(this);
+        mainw.newres.addActionListener(this);
+        mainw.showres.addActionListener(this);
+        del_u.jButton1.addActionListener(this);//Delete button
+        search_u.jButton1.addActionListener(this);//Search button
+        add_u.jButton1.addActionListener(this);//Add button
+        add_r.jButton1.addActionListener(this);//Make reservation button
+//        show_r.jButton1.addActionListener(this);//Delete button from reservations
+
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == mw.adduser) {//Add new user menu item
+        if (e.getSource() == mainw.adduser) {//Add new user menu item
             add_u.setVisible(true);
-        } else if (e.getSource() == mw.showusers) {//Show all the users
+        } else if (e.getSource() == mainw.showusers) {//Show all the users
             DefaultTableModel dm = new DefaultTableModel(0, 0);
             String s[] = new String[]{"DNI", "Name", "Surname", "Birth", "Address", "Phone", "Username", "Password", "Email"};
             dm.setColumnIdentifiers(s);
@@ -90,7 +97,7 @@ public class ctrl implements ActionListener {
             }
 
             show_u.setVisible(true);
-        } else if (e.getSource() == mw.deleteuser) {//Delete user
+        } else if (e.getSource() == mainw.deleteuser) {//Delete user
             DefaultTableModel dm = new DefaultTableModel(0, 0);
             String s[] = new String[]{"DNI", "Name", "Surname", "Birth", "Address", "Phone", "Username", "Password", "Email"};
             dm.setColumnIdentifiers(s);
@@ -117,15 +124,15 @@ public class ctrl implements ActionListener {
             //At this point we have the table filled
 
             del_u.setVisible(true);
-        } else if (e.getSource() == mw.searchuser) {//Search user
+        } else if (e.getSource() == mainw.searchuser) {//Search user
             search_u.setVisible(true);
 
-        }else if (e.getSource() == mw.newres) {
+        } else if (e.getSource() == mainw.newres) {
             DefaultTableModel dm = new DefaultTableModel(0, 0);
             String s[] = new String[]{"ID", "Duration (min)", "Origin", "Destination", "First pilot", "Second pilot", "Available seats", "Date", "Price (€)"};
             dm.setColumnIdentifiers(s);
-            ar.jTable1.setModel(dm);
-            ar.jTable1.setEnabled(true);
+            add_r.jTable1.setModel(dm);
+            add_r.jTable1.setEnabled(true);
             List<Flight> flights = getFlights();
             for (int i = 0; i < flights.size(); i++) {
 
@@ -143,10 +150,33 @@ public class ctrl implements ActionListener {
 
                 dm.addRow(vector);
             }
-            ar.setVisible(true);
-        } 
-        
-        else if (e.getSource() == add_u.jButton1) { //add new user button
+            add_r.setVisible(true);
+        } else if (e.getSource() == mainw.showres) {
+            DefaultTableModel dm = new DefaultTableModel(0, 0);
+            String s[] = new String[]{"ID", "Origin", "Destination", "Date"};
+            dm.setColumnIdentifiers(s);
+
+            show_r.jTable1.setModel(dm);
+
+            List<Flight> ress = getRess();
+
+            for (int i = 0; i < ress.size(); i++) {
+
+                Vector<String> vector = new Vector<>();
+                vector.add(Integer.toString(ress.get(i).getFlightid()));
+                vector.add(ress.get(i).getOrigin());
+                vector.add(ress.get(i).getDestination());
+                vector.add(ress.get(i).getDate().toString());
+
+
+                dm.addRow(vector);
+            }
+            //At this point we have the table filled
+
+            show_r.setVisible(true);
+            
+            
+        } else if (e.getSource() == add_u.jButton1) { //add new user button
 
             if (validateUser(add_u)) {
 
@@ -161,7 +191,7 @@ public class ctrl implements ActionListener {
                 user.setUsername(add_u.usernameTB.getText());
                 user.setPassword(add_u.pwTB.getText());
                 user.setEmail(add_u.emailTB.getText());
-                
+
                 writeUser(user);
             }
         } else if (e.getSource() == search_u.jButton1) {//Search for a user button
@@ -174,7 +204,7 @@ public class ctrl implements ActionListener {
                 dm.setColumnIdentifiers(s);
                 search_u.jTable1.setModel(dm);
                 search_u.jTable1.setEnabled(false);
-                Vector<String> vector = new Vector<String>();
+                Vector<String> vector = new Vector<>();
                 vector.add(user.getDni());
                 vector.add(user.getName());
                 vector.add(user.getSurname());
@@ -191,11 +221,7 @@ public class ctrl implements ActionListener {
                 search_u.jLabel2.setVisible(true);
             }
 
-        } 
-        
-        
-        
-        else if (e.getSource() == del_u.jButton1) {
+        } else if (e.getSource() == del_u.jButton1) {
             if (del_u.jTable1.getSelectionModel().isSelectionEmpty()) {
                 JOptionPane.showMessageDialog(null,
                         "You must select one row",
@@ -210,14 +236,13 @@ public class ctrl implements ActionListener {
                 dm.removeRow(selectedRow);
                 del_u.jTable1.setModel(dm);
             }
-        } else if (e.getSource() == ar.jButton1) {//Reservation button
-            
+        } else if (e.getSource() == add_r.jButton1) {//Reservation button
 
-            String un = ar.jTextField1.getText();
-            String pw = new String(ar.jPasswordField1.getPassword());
-            String id =  (String) ar.jTable1.getValueAt(ar.jTable1.getSelectedRow(), 0);
+            String un = add_r.jTextField1.getText();
+            String pw = new String(add_r.jPasswordField1.getPassword());
+            String id = (String) add_r.jTable1.getValueAt(add_r.jTable1.getSelectedRow(), 0);
             int f_id = Integer.parseInt(id);
-            reserve(un,pw,f_id);
+            reserve(un, pw, f_id);
         }
 
     }
