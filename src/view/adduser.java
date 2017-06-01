@@ -12,12 +12,12 @@ import java.text.SimpleDateFormat;
  *
  * @author DM3-1-20
  */
-public class adduser extends javax.swing.JFrame {
+public class AddUser extends javax.swing.JFrame {
 
     /**
      * Creates new form adduser
      */
-    public adduser() {
+    public AddUser() {
         initComponents();
     }
 
