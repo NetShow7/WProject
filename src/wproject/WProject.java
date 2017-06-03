@@ -13,6 +13,8 @@ import view.MainWindow;
 import view.SearchUser;
 import view.ShowUsers;
 import view.AddRes;
+import view.FlightWindow;
+import view.Login;
 import view.ShowRes;
 
 /**
@@ -30,6 +32,8 @@ public class WProject {
     ctrl ctrl;
     AddRes ar;
     ShowRes sr;
+    Login lg;
+    FlightWindow fw;
 
     public static void main(String[] args) {
         WProject main = new WProject();
@@ -44,7 +48,10 @@ public class WProject {
         se = new SearchUser();
         del = new DeleteUser();
         ar = new AddRes();
-        ctrl = new ctrl(mw, au, sh,se,del, mng,ar,sr);
+        sr = new ShowRes();
+        lg = new Login();
+        fw = new FlightWindow();
+        ctrl = new ctrl(mw, au, sh,se,del, mng,ar,sr,lg,fw);
         mw.setVisible(true);
     }
 }

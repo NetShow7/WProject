@@ -37,8 +37,8 @@ public class MainWindow extends javax.swing.JFrame {
         deleteuser = new javax.swing.JMenuItem();
         searchuser = new javax.swing.JMenuItem();
         flightmenu = new javax.swing.JMenu();
+        flmenu = new javax.swing.JMenuItem();
         resmenu = new javax.swing.JMenu();
-        checkres = new javax.swing.JMenuItem();
         showres = new javax.swing.JMenuItem();
         newres = new javax.swing.JMenuItem();
 
@@ -68,12 +68,13 @@ public class MainWindow extends javax.swing.JFrame {
         mwmenubar.add(usermenu);
 
         flightmenu.setText("Flights");
+
+        flmenu.setText("Flights Window");
+        flightmenu.add(flmenu);
+
         mwmenubar.add(flightmenu);
 
         resmenu.setText("Reservations");
-
-        checkres.setText("Check reservation");
-        resmenu.add(checkres);
 
         showres.setText("Show all reservations");
         resmenu.add(showres);
@@ -110,9 +111,9 @@ public class MainWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem adduser;
-    public javax.swing.JMenuItem checkres;
     public javax.swing.JMenuItem deleteuser;
-    private javax.swing.JMenu flightmenu;
+    public javax.swing.JMenu flightmenu;
+    public javax.swing.JMenuItem flmenu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar mwmenubar;
     public javax.swing.JMenuItem newres;
