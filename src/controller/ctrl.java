@@ -7,22 +7,38 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import model.Flight;
+import model.Tools;
+import static model.Tools.login;
+import static model.Tools.validateFlight;
+import static model.Tools.validateUser;
 import model.User;
 import model.management;
-import model.management.MiObjectInputStream;
+import static model.management.delRes;
+import static model.management.deleteUser;
+import static model.management.deleteFlight;
+import static model.management.getFlights;
+import static model.management.getRess;
+import static model.management.getUsers;
+import static model.management.reserve;
 import static model.management.searchUser;
+import static model.management.writeFlight;
 import static model.management.writeUser;
-import view.adduser;
-import view.delete;
-import view.mainw;
-import view.search;
-import view.show;
+import view.AddUser;
+import view.DeleteUser;
+import view.MainWindow;
+import view.SearchUser;
+import view.ShowUsers;
+import view.AddRes;
+import view.FlightWindow;
+import view.Login;
+import view.ShowRes;
 
 /**
  *
@@ -30,95 +46,217 @@ import view.show;
  */
 public class ctrl implements ActionListener {
 
-    private mainw mw;
-    private adduser au;
-    private show sh;
-    private search se;
-    private delete del;
+    private MainWindow mainw;
+    private AddUser add_u;
+    private ShowUsers show_u;
+    private SearchUser search_u;
+    private DeleteUser del_u;
+    private AddRes add_r;
+    private ShowRes show_r;
+    private Login login;
+    private FlightWindow flightw;
     private management mng = new management();
+    private int UserID;
 
-    public ctrl(mainw mw, adduser au, show sh, search se,delete del, management mng) {
-        this.mw = mw;
-        this.au = au;
-        this.sh = sh;
-        this.se = se;
-        this.del = del;
-        this.mng = mng;
+    public ctrl(MainWindow mw, AddUser au, ShowUsers sh, SearchUser se, DeleteUser del, management mngt, AddRes ar, ShowRes sr, Login lg, FlightWindow fw) {
+        mainw = mw;
+        add_u = au;
+        show_u = sh;
+        search_u = se;
+        del_u = del;
+        mng = mngt;
+        add_r = ar;
+        show_r = sr;
+        login = lg;
+        flightw = fw;
         //Listeners
-        this.mw.jMenuItem1.addActionListener(this);
-        this.mw.jMenuItem2.addActionListener(this);
-        this.mw.jMenuItem3.addActionListener(this);
-        this.mw.jMenuItem4.addActionListener(this);
-        this.del.jButton1.addActionListener(this);
-        this.se.jButton1.addActionListener(this);
-        this.au.jButton1.addActionListener(this);
+        mainw.adduser.addActionListener(this);
+        mainw.showusers.addActionListener(this);
+        mainw.deleteuser.addActionListener(this);
+        mainw.searchuser.addActionListener(this);
+        mainw.newres.addActionListener(this);
+        mainw.showres.addActionListener(this);
+        mainw.flmenu.addActionListener(this);
+        del_u.jButton1.addActionListener(this);//Delete button
+        search_u.jButton1.addActionListener(this);//Search button
+        add_u.jButton1.addActionListener(this);//Add button
+        add_r.jButton1.addActionListener(this);//Make reservation button
+        show_r.jButton1.addActionListener(this);//Delete button from reservations
+        show_r.jButton2.addActionListener(this);//Check button from reservations
+        login.jButton1.addActionListener(this);
+        flightw.addBT.addActionListener(this);
+        flightw.delBT.addActionListener(this);
+        flightw.logoutBT.addActionListener(this);
+        Tools.setCon(this);
+
+    }
+
+    public int getID() {
+        return UserID;
+    }
+
+    public void setID(int id) {
+        UserID = id;
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == mw.jMenuItem1) {//Add new user menu item
-            au.setVisible(true);
-        } else if (e.getSource() == mw.jMenuItem4) {
-            se.setVisible(true);
-
-        } else if (e.getSource() == au.jButton1) { //add new user button
-            User user = new User(); //Create new user
-
-            //Asign values to the user
-            user.setDni(Integer.parseInt(au.dniTB.getText()));
-            user.setName(au.nameTB.getText());
-            user.setSurname(au.surnameTB.getText());
-            user.setBirth(au.birthTB.getText());
-            user.setAddress(au.addressTB.getText());
-            user.setPhone(Integer.parseInt(au.phoneTB.getText()));
-            user.setUsername(au.usernameTB.getText());
-            user.setPassword(au.pwTB.getText());
-            user.setEmail(au.emailTB.getText());
-
-            writeUser(user);
-        } else if (e.getSource() == mw.jMenuItem2) {//Show all the users
+        if (e.getSource() == mainw.adduser) {//Add new user menu item
+            add_u.setVisible(true);
+        } else if (e.getSource() == mainw.showusers) {//Show all the users
             DefaultTableModel dm = new DefaultTableModel(0, 0);
             String s[] = new String[]{"DNI", "Name", "Surname", "Birth", "Address", "Phone", "Username", "Password", "Email"};
             dm.setColumnIdentifiers(s);
-            sh.jTable1.setModel(dm);
-            sh.jTable1.setEnabled(false);
+            show_u.jTable1.setModel(dm);
+            show_u.jTable1.setEnabled(false);
+            List<User> users = getUsers();
 
-            try (MiObjectInputStream ois = new MiObjectInputStream(new FileInputStream("C:\\program\\Users.ser"))) {
-                while (true) {//Reads users from file and shows their members
-                    User user = (User) ois.readObject();
-                    Vector<String> vector = new Vector<String>();
-                    vector.add(Integer.toString(user.getDni()));
-                    vector.add(user.getName());
-                    vector.add(user.getSurname());
-                    vector.add(user.getBirth().toString());
-                    vector.add(user.getAddress());
-                    vector.add(Integer.toString(user.getPhone()));
-                    vector.add(user.getUsername());
-                    vector.add(user.getPassword());
-                    vector.add(user.getEmail());
+            for (int i = 0; i < users.size(); i++) {
 
-                    dm.addRow(vector);
-                }
+                Vector<String> vector = new Vector<>();
+                vector.add(users.get(i).getDni());
+                vector.add(users.get(i).getName());
+                vector.add(users.get(i).getSurname());
+                vector.add(users.get(i).getBirth().toString());
+                vector.add(users.get(i).getAddress());
+                vector.add(Integer.toString(users.get(i).getPhone()));
+                vector.add(users.get(i).getUsername());
+                vector.add(users.get(i).getPassword());
+                vector.add(users.get(i).getEmail());
 
-            } catch (FileNotFoundException ex) {
-                System.out.println("Can't find file (Probably there are no users saved)");
-            } catch (IOException ex) {
-
-            } catch (ClassNotFoundException ex) {
+                dm.addRow(vector);
             }
 
-            sh.setVisible(true);
-        } else if (e.getSource() == se.jButton1) {//Search for a user
-            se.jLabel2.setVisible(false);
-            int dni = Integer.parseInt(se.jTextField1.getText());
-            User user = searchUser(dni, se);
+            show_u.setVisible(true);
+        } else if (e.getSource() == mainw.deleteuser) {//Delete user
+            DefaultTableModel dm = new DefaultTableModel(0, 0);
+            String s[] = new String[]{"DNI", "Name", "Surname", "Birth", "Address", "Phone", "Username", "Password", "Email"};
+            dm.setColumnIdentifiers(s);
+
+            del_u.jTable1.setModel(dm);
+
+            List<User> users = getUsers();
+
+            for (int i = 0; i < users.size(); i++) {
+
+                Vector<String> vector = new Vector<>();
+                vector.add(users.get(i).getDni());
+                vector.add(users.get(i).getName());
+                vector.add(users.get(i).getSurname());
+                vector.add(users.get(i).getBirth().toString());
+                vector.add(users.get(i).getAddress());
+                vector.add(Integer.toString(users.get(i).getPhone()));
+                vector.add(users.get(i).getUsername());
+                vector.add(users.get(i).getPassword());
+                vector.add(users.get(i).getEmail());
+
+                dm.addRow(vector);
+            }
+            //At this point we have the table filled
+
+            del_u.setVisible(true);
+        } else if (e.getSource() == mainw.searchuser) {//Search user
+            search_u.setVisible(true);
+
+        } else if (e.getSource() == mainw.newres) {
+            DefaultTableModel dm = new DefaultTableModel(0, 0);
+            String s[] = new String[]{"ID", "Duration (min)", "Origin", "Destination", "First pilot", "Second pilot", "Available seats", "Date", "Price (€)"};
+            dm.setColumnIdentifiers(s);
+            add_r.jTable1.setModel(dm);
+            add_r.jTable1.setEnabled(true);
+            List<Flight> flights = getFlights();
+            for (int i = 0; i < flights.size(); i++) {
+
+                Vector<String> vector = new Vector<>();
+
+                vector.add(Integer.toString(flights.get(i).getFlightid()));
+                vector.add(Integer.toString(flights.get(i).getDuration()));
+                vector.add(flights.get(i).getOrigin());
+                vector.add(flights.get(i).getDestination());
+                vector.add(flights.get(i).getPilot1());
+                vector.add(flights.get(i).getPilot2());
+                vector.add(Integer.toString(flights.get(i).getTickets() - flights.get(i).getTickets_sold()));
+                vector.add(flights.get(i).getDate().toString());
+                vector.add(Float.toString(flights.get(i).getPrice()));
+
+                dm.addRow(vector);
+            }
+            add_r.setVisible(true);
+        } else if (e.getSource() == mainw.showres) {
+            DefaultTableModel dm = new DefaultTableModel(0, 0);
+            String s[] = new String[]{"ID", "Origin", "Destination", "Date"};
+            dm.setColumnIdentifiers(s);
+            show_r.jTable1.setModel(dm);
+            show_r.setVisible(true);
+
+        } else if (e.getSource() == mainw.flmenu) {
+            login.setVisible(true);
+        } else if (e.getSource() == show_r.jButton2) {
+
+            List<Flight> ress = getRess(show_r.jTextField1.getText(), new String(show_r.jPasswordField1.getPassword()));
+            if (!ress.isEmpty()) {
+                DefaultTableModel dm = (DefaultTableModel) show_r.jTable1.getModel();
+                dm.setRowCount(0);
+                for (int i = 0; i < ress.size(); i++) {
+
+                    Vector<String> vector = new Vector<>();
+                    vector.add(Integer.toString(ress.get(i).getFlightid()));
+                    vector.add(ress.get(i).getOrigin());
+                    vector.add(ress.get(i).getDestination());
+                    vector.add(ress.get(i).getDate().toString());
+
+                    dm.addRow(vector);
+
+                }
+                show_r.jTable1.setModel(dm);
+            }
+
+        } else if (e.getSource() == show_r.jButton1) {
+            if (show_r.jTable1.getSelectionModel().isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "You must select one row",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            } else {
+
+                int i = show_r.jTable1.getSelectedRow();
+                String id = (String) show_r.jTable1.getValueAt(i, 0);
+                delRes(id, UserID);
+                DefaultTableModel dm = (DefaultTableModel) show_r.jTable1.getModel();
+                dm.removeRow(i);
+                show_r.jTable1.setModel(dm);
+
+            }
+        } else if (e.getSource() == add_u.jButton1) { //add new user button
+
+            if (validateUser(add_u)) {
+
+                User user = new User(); //Create new user
+                //Asign values to the user
+                user.setDni(add_u.dniTB.getText());
+                user.setName(add_u.nameTB.getText());
+                user.setSurname(add_u.surnameTB.getText());
+                user.setBirth(add_u.birthTB.getText());
+                user.setAddress(add_u.addressTB.getText());
+                user.setPhone(Integer.parseInt(add_u.phoneTB.getText()));
+                user.setUsername(add_u.usernameTB.getText());
+                user.setPassword(add_u.pwTB.getText());
+                user.setEmail(add_u.emailTB.getText());
+
+                writeUser(user);
+            }
+        } else if (e.getSource()
+                == search_u.jButton1) {//Search for a user button
+            search_u.jLabel2.setVisible(false);
+            String dni = search_u.jTextField1.getText();
+            User user = searchUser(dni);
             if (user != null) {//Create table and show the user
                 DefaultTableModel dm = new DefaultTableModel(0, 0);
                 String s[] = new String[]{"DNI", "Name", "Surname", "Birth", "Address", "Phone", "Username", "Password", "Email"};
                 dm.setColumnIdentifiers(s);
-                se.jTable1.setModel(dm);
-                se.jTable1.setEnabled(false);
-                Vector<String> vector = new Vector<String>();
-                vector.add(Integer.toString(user.getDni()));
+                search_u.jTable1.setModel(dm);
+                search_u.jTable1.setEnabled(false);
+                Vector<String> vector = new Vector<>();
+                vector.add(user.getDni());
                 vector.add(user.getName());
                 vector.add(user.getSurname());
                 vector.add(user.getBirth().toString());
@@ -129,13 +267,115 @@ public class ctrl implements ActionListener {
                 vector.add(user.getEmail());
 
                 dm.addRow(vector);
-            }else{
-                se.jLabel2.setText("Can't find user");
-                se.jLabel2.setVisible(true);
+            } else {
+                search_u.jLabel2.setText("Can't find user");
+                search_u.jLabel2.setVisible(true);
             }
 
-        }else if (e.getSource() == del.jButton1) {
-            
+        } else if (e.getSource() == del_u.jButton1) { //Delete button from 'delete users'
+            if (del_u.jTable1.getSelectionModel().isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "You must select one row",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            } else {
+                int i = del_u.jTable1.getSelectedRow();
+                String id = (String) del_u.jTable1.getValueAt(i, 0);
+                deleteUser(id);
+                int selectedRow = del_u.jTable1.getSelectedRow();
+                DefaultTableModel dm = (DefaultTableModel) del_u.jTable1.getModel();
+                dm.removeRow(selectedRow);
+                del_u.jTable1.setModel(dm);
+            }
+        } else if (e.getSource() == add_r.jButton1) {//Reservation button
+            if (add_r.jTable1.getSelectionModel().isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "You must select one row",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            } else {
+                String un = add_r.jTextField1.getText();
+                String pw = new String(add_r.jPasswordField1.getPassword());
+                String id = (String) add_r.jTable1.getValueAt(add_r.jTable1.getSelectedRow(), 0);
+                int f_id = Integer.parseInt(id);
+                reserve(un, pw, f_id);
+
+            }
+        } else if (e.getSource() == login.jButton1) {
+            int id = login(login.jTextField1.getText(), new String(login.jPasswordField1.getPassword()));
+            if (id != -1) {
+
+                login.setVisible(false);
+
+                //Here we prepare the flights window
+                flightw.helloTF.setText("Hello " + login.jTextField1.getText() + "!");
+                flightw.helloTF.setHorizontalAlignment(flightw.helloTF.CENTER);
+
+
+                //Fill the table
+                DefaultTableModel dm = new DefaultTableModel(0, 0);
+                String s[] = new String[]{"ID", "Duration (min)", "Origin", "Destination", "First pilot", "Second pilot", "Available seats", "Date", "Price (€)"};
+                dm.setColumnIdentifiers(s);
+                flightw.jTable1.setModel(dm);
+                flightw.jTable1.setEnabled(true);
+                List<Flight> flights = getFlights();
+                for (int i = 0; i < flights.size(); i++) {
+
+                    Vector<String> vector = new Vector<>();
+
+                    vector.add(Integer.toString(flights.get(i).getFlightid()));
+                    vector.add(Integer.toString(flights.get(i).getDuration()));
+                    vector.add(flights.get(i).getOrigin());
+                    vector.add(flights.get(i).getDestination());
+                    vector.add(flights.get(i).getPilot1());
+                    vector.add(flights.get(i).getPilot2());
+                    vector.add(Integer.toString(flights.get(i).getTickets() - flights.get(i).getTickets_sold()));
+                    vector.add(flights.get(i).getDate().toString());
+                    vector.add(Float.toString(flights.get(i).getPrice()));
+
+                    dm.addRow(vector);
+                }
+
+                flightw.setVisible(true);
+            }
+        } else if (e.getSource() == flightw.addBT) {//Add new flight
+            if (validateFlight(flightw)) {
+
+                Flight flight = new Flight();
+                //Asign values to the flight and to the vector (for updating the table)
+                flight.setDuration(Integer.parseInt(flightw.durTF.getText()));
+                flight.setOrigin(flightw.oriTF.getText());
+                flight.setDestination(flightw.desTF.getText());
+                flight.setPilot1(flightw.p1TF.getText());
+                flight.setPilot2(flightw.p2TF.getText());
+                flight.setTickets(Integer.parseInt(flightw.ticTF.getText()));
+                flight.setTickets_sold(Integer.parseInt(flightw.soldTF.getText()));
+                flight.setDate(flightw.dateTF.getText());
+                flight.setPrice(Integer.parseInt(flightw.priceTF.getText()));              
+                writeFlight(flight);
+            }
         }
+        else if (e.getSource() == flightw.delBT) {
+            if (flightw.jTable1.getSelectionModel().isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "You must select one row",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            } else {
+                int i = flightw.jTable1.getSelectedRow();
+                String id = (String) flightw.jTable1.getValueAt(i, 0);
+                deleteFlight(id);
+                int selectedRow = flightw.jTable1.getSelectedRow();
+                DefaultTableModel dm = (DefaultTableModel) flightw.jTable1.getModel();
+                dm.removeRow(selectedRow);
+                flightw.jTable1.setModel(dm);
+            }
+        }
+        else if (e.getSource() == flightw.logoutBT) { //Logout button
+            flightw.setVisible(false);
+            login.jTextField1.setText("");
+            login.jPasswordField1.setText("");
+        }
+
     }
 }

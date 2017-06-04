@@ -7,11 +7,15 @@ package wproject;
 
 import controller.ctrl;
 import model.management;
-import view.adduser;
-import view.delete;
-import view.mainw;
-import view.search;
-import view.show;
+import view.AddUser;
+import view.DeleteUser;
+import view.MainWindow;
+import view.SearchUser;
+import view.ShowUsers;
+import view.AddRes;
+import view.FlightWindow;
+import view.Login;
+import view.ShowRes;
 
 /**
  *
@@ -20,12 +24,16 @@ import view.show;
 public class WProject {
 
     management mng;
-    mainw mw;
-    adduser au;
-    show sh;
-    search se;
-    delete del;
+    MainWindow mw;
+    AddUser au;
+    ShowUsers sh;
+    SearchUser se;
+    DeleteUser del;
     ctrl ctrl;
+    AddRes ar;
+    ShowRes sr;
+    Login lg;
+    FlightWindow fw;
 
     public static void main(String[] args) {
         WProject main = new WProject();
@@ -34,12 +42,16 @@ public class WProject {
 
     private void start() {
         mng = new management();
-        mw = new mainw();
-        au = new adduser();
-        sh = new show();
-        se = new search();
-        del = new delete();
-        ctrl = new ctrl(mw, au, sh,se,del, mng);
+        mw = new MainWindow();
+        au = new AddUser();
+        sh = new ShowUsers();
+        se = new SearchUser();
+        del = new DeleteUser();
+        ar = new AddRes();
+        sr = new ShowRes();
+        lg = new Login();
+        fw = new FlightWindow();
+        ctrl = new ctrl(mw, au, sh,se,del, mng,ar,sr,lg,fw);
         mw.setVisible(true);
     }
 }

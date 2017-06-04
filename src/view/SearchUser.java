@@ -9,12 +9,12 @@ package view;
  *
  * @author DM3-1-20
  */
-public class search extends javax.swing.JFrame {
+public class SearchUser extends javax.swing.JFrame {
 
     /**
      * Creates new form search
      */
-    public search() {
+    public SearchUser() {
         initComponents();
     }
 
@@ -44,7 +44,14 @@ public class search extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(jTable1);
 
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
+
         jButton1.setText("Find");
+        jButton1.setEnabled(false);
 
         jLabel1.setText("User DNI:");
 
@@ -84,6 +91,22 @@ public class search extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        String dni = jTextField1.getText();
+        if (dni.length() == 9 && Character.isLetter(dni.charAt(8))) {
+            String num = dni.substring(0, 8);
+            try {
+                int i = Integer.parseInt(num);
+                jButton1.setEnabled(true);
+            } catch (Exception ex) {
+                jButton1.setEnabled(false);
+            }
+
+        } else {
+            jButton1.setEnabled(false);
+        }
+    }//GEN-LAST:event_jTextField1KeyReleased
 
     /**
      * @param args the command line arguments
