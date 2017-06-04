@@ -6,6 +6,7 @@
 package wproject;
 
 import controller.ctrl;
+import javax.swing.ImageIcon;
 import model.management;
 import view.AddUser;
 import view.DeleteUser;
@@ -38,6 +39,7 @@ public class WProject {
     public static void main(String[] args) {
         WProject main = new WProject();
         main.start();
+        
     }
 
     private void start() {
@@ -52,6 +54,8 @@ public class WProject {
         lg = new Login();
         fw = new FlightWindow();
         ctrl = new ctrl(mw, au, sh,se,del, mng,ar,sr,lg,fw);
+        mw.jLabel1.setIcon(new ImageIcon("img\\fly.png"));
+        mw.setIconImage(new ImageIcon("img\\icon.jpg").getImage());
         mw.setVisible(true);
     }
 }

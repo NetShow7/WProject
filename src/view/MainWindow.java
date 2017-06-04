@@ -29,7 +29,7 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel(new ImageIcon("img\\fly.png"));
+        jLabel1 = new javax.swing.JLabel();
         mwmenubar = new javax.swing.JMenuBar();
         usermenu = new javax.swing.JMenu();
         adduser = new javax.swing.JMenuItem();
@@ -44,7 +44,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Skydancer manager");
-        setIconImage(new ImageIcon("img\\icon.jpg").getImage());
 
         usermenu.setText("Users");
 
@@ -90,11 +89,11 @@ public class MainWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 795, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
         );
 
         pack();
@@ -114,7 +113,7 @@ public class MainWindow extends javax.swing.JFrame {
     public javax.swing.JMenuItem deleteuser;
     public javax.swing.JMenu flightmenu;
     public javax.swing.JMenuItem flmenu;
-    private javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar mwmenubar;
     public javax.swing.JMenuItem newres;
     public javax.swing.JMenu resmenu;
