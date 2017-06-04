@@ -36,7 +36,7 @@ public class management {
     public static void writeFlight(Flight fl) {
         query("INSERT INTO FLIGHTS (duration,origin,destination,pilot1,pilot2,tickets,tickets_sold,fdate,price) VALUES ('" + fl.getDuration() + "','" + fl.getOrigin() + "','" + fl.getDestination() + "','" + fl.getPilot1() + "','" + fl.getPilot2() + "'," + fl.getTickets() + ",'" + fl.getTickets_sold() + "','" + fl.getDate() + "','" + fl.getPrice() + "')", false);
         JOptionPane.showMessageDialog(null,
-                "User successfully added.",
+                "Flight successfully added.",
                 "Success",
                 JOptionPane.INFORMATION_MESSAGE);
 
@@ -188,11 +188,6 @@ public class management {
                 }
                 return flights;
 
-            } else {
-                JOptionPane.showMessageDialog(null,
-                        "Incorrect username or password",
-                        "Auth error",
-                        JOptionPane.INFORMATION_MESSAGE);
             }
 
         } catch (SQLException ex) {
@@ -221,7 +216,7 @@ public class management {
 
     }
 
-    public static void deleteFlight(int id) {
+    public static void deleteFlight(String id) {
         query("DELETE FROM FLIGHTS WHERE id = '" + id + "'", false);
         JOptionPane.showMessageDialog(null,
                 "The flight has been successfully deleted from the DB",

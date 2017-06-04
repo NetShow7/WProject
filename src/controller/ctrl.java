@@ -12,19 +12,23 @@ import java.util.List;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import model.Flight;
 import model.Tools;
 import static model.Tools.login;
+import static model.Tools.validateFlight;
 import static model.Tools.validateUser;
 import model.User;
 import model.management;
 import static model.management.delRes;
 import static model.management.deleteUser;
+import static model.management.deleteFlight;
 import static model.management.getFlights;
 import static model.management.getRess;
 import static model.management.getUsers;
 import static model.management.reserve;
 import static model.management.searchUser;
+import static model.management.writeFlight;
 import static model.management.writeUser;
 import view.AddUser;
 import view.DeleteUser;
@@ -80,19 +84,21 @@ public class ctrl implements ActionListener {
         show_r.jButton1.addActionListener(this);//Delete button from reservations
         show_r.jButton2.addActionListener(this);//Check button from reservations
         login.jButton1.addActionListener(this);
+        flightw.addBT.addActionListener(this);
         flightw.delBT.addActionListener(this);
         flightw.logoutBT.addActionListener(this);
         Tools.setCon(this);
 
     }
 
-    public int getID(){
+    public int getID() {
         return UserID;
     }
-    public void setID(int id){
+
+    public void setID(int id) {
         UserID = id;
     }
-    
+
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mainw.adduser) {//Add new user menu item
             add_u.setVisible(true);
@@ -204,27 +210,23 @@ public class ctrl implements ActionListener {
                 show_r.jTable1.setModel(dm);
             }
 
-        }else if (e.getSource() == show_r.jButton1) {
+        } else if (e.getSource() == show_r.jButton1) {
             if (show_r.jTable1.getSelectionModel().isSelectionEmpty()) {
                 JOptionPane.showMessageDialog(null,
                         "You must select one row",
                         "Warning",
                         JOptionPane.WARNING_MESSAGE);
             } else {
-               
+
                 int i = show_r.jTable1.getSelectedRow();
                 String id = (String) show_r.jTable1.getValueAt(i, 0);
                 delRes(id, UserID);
                 DefaultTableModel dm = (DefaultTableModel) show_r.jTable1.getModel();
                 dm.removeRow(i);
                 show_r.jTable1.setModel(dm);
-                
-                
+
             }
-        }
-        
-        
-        else if (e.getSource() == add_u.jButton1) { //add new user button
+        } else if (e.getSource() == add_u.jButton1) { //add new user button
 
             if (validateUser(add_u)) {
 
@@ -302,9 +304,77 @@ public class ctrl implements ActionListener {
         } else if (e.getSource() == login.jButton1) {
             int id = login(login.jTextField1.getText(), new String(login.jPasswordField1.getPassword()));
             if (id != -1) {
+
                 login.setVisible(false);
+
+                //Here we prepare the flights window
+                flightw.helloTF.setText("Hello " + login.jTextField1.getText() + "!");
+                flightw.helloTF.setHorizontalAlignment(flightw.helloTF.CENTER);
+
+
+                //Fill the table
+                DefaultTableModel dm = new DefaultTableModel(0, 0);
+                String s[] = new String[]{"ID", "Duration (min)", "Origin", "Destination", "First pilot", "Second pilot", "Available seats", "Date", "Price (€)"};
+                dm.setColumnIdentifiers(s);
+                flightw.jTable1.setModel(dm);
+                flightw.jTable1.setEnabled(true);
+                List<Flight> flights = getFlights();
+                for (int i = 0; i < flights.size(); i++) {
+
+                    Vector<String> vector = new Vector<>();
+
+                    vector.add(Integer.toString(flights.get(i).getFlightid()));
+                    vector.add(Integer.toString(flights.get(i).getDuration()));
+                    vector.add(flights.get(i).getOrigin());
+                    vector.add(flights.get(i).getDestination());
+                    vector.add(flights.get(i).getPilot1());
+                    vector.add(flights.get(i).getPilot2());
+                    vector.add(Integer.toString(flights.get(i).getTickets() - flights.get(i).getTickets_sold()));
+                    vector.add(flights.get(i).getDate().toString());
+                    vector.add(Float.toString(flights.get(i).getPrice()));
+
+                    dm.addRow(vector);
+                }
+
                 flightw.setVisible(true);
             }
+        } else if (e.getSource() == flightw.addBT) {//Add new flight
+            if (validateFlight(flightw)) {
+
+                Flight flight = new Flight();
+                //Asign values to the flight and to the vector (for updating the table)
+                flight.setDuration(Integer.parseInt(flightw.durTF.getText()));
+                flight.setOrigin(flightw.oriTF.getText());
+                flight.setDestination(flightw.desTF.getText());
+                flight.setPilot1(flightw.p1TF.getText());
+                flight.setPilot2(flightw.p2TF.getText());
+                flight.setTickets(Integer.parseInt(flightw.ticTF.getText()));
+                flight.setTickets_sold(Integer.parseInt(flightw.soldTF.getText()));
+                flight.setDate(flightw.dateTF.getText());
+                flight.setPrice(Integer.parseInt(flightw.priceTF.getText()));              
+                writeFlight(flight);
+            }
+        }
+        else if (e.getSource() == flightw.delBT) {
+            if (flightw.jTable1.getSelectionModel().isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "You must select one row",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            } else {
+                int i = flightw.jTable1.getSelectedRow();
+                String id = (String) flightw.jTable1.getValueAt(i, 0);
+                deleteFlight(id);
+                int selectedRow = flightw.jTable1.getSelectedRow();
+                DefaultTableModel dm = (DefaultTableModel) flightw.jTable1.getModel();
+                dm.removeRow(selectedRow);
+                flightw.jTable1.setModel(dm);
+            }
+        }
+        else if (e.getSource() == flightw.logoutBT) { //Logout button
+            flightw.setVisible(false);
+            login.jTextField1.setText("");
+            login.jPasswordField1.setText("");
         }
 
     }

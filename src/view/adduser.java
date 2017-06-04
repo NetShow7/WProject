@@ -53,12 +53,6 @@ public class AddUser extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
 
-        dniTB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dniTBActionPerformed(evt);
-            }
-        });
-
         dniL.setText("DNI number");
 
         nameL.setText("Name");
@@ -175,10 +169,6 @@ public class AddUser extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void dniTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dniTBActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dniTBActionPerformed
 
     /**
      * @param args the command line arguments

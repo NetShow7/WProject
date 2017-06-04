@@ -41,6 +41,7 @@ public class ShowRes extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         jButton1.setText("Delete");
+        jButton1.setEnabled(false);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -73,6 +74,7 @@ public class ShowRes extends javax.swing.JFrame {
         jLabel3.setText("Type your username and your password,");
 
         jButton2.setText("Check");
+        jButton2.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -142,19 +144,23 @@ public class ShowRes extends javax.swing.JFrame {
 
         if (jPasswordField1.getPassword().length == 0 || jTextField1.getText().length() == 0) {
             jButton1.setEnabled(false);
+            jButton2.setEnabled(false);
         } else {
             if (!jTextField1.getText().isEmpty()) {
                 if (!jTextField1.getText().matches("[A-Za-z0-9_]+")) {
 
                     jButton1.setEnabled(false);
+                    jButton2.setEnabled(false);
                 } else {
 
                     jButton1.setEnabled(true);
+                    jButton2.setEnabled(true);
 
                 }
             } else {
 
                 jButton1.setEnabled(false);
+                jButton2.setEnabled(false);
             }
         }
     }//GEN-LAST:event_jTextField1KeyReleased
@@ -163,7 +169,7 @@ public class ShowRes extends javax.swing.JFrame {
 
         if (jTextField1.getText().length() == 0 || jPasswordField1.getPassword().length == 0) {
             jButton1.setEnabled(false);
-            jButton2.setEnabled(true);
+            jButton2.setEnabled(false);
         } else {
             String pass = Arrays.toString(jPasswordField1.getPassword());
             if (!pass.isEmpty()) {
@@ -173,11 +179,11 @@ public class ShowRes extends javax.swing.JFrame {
 
                 } else {
                     jButton1.setEnabled(false);
-                    jButton2.setEnabled(true);
+                    jButton2.setEnabled(false);
                 }
             } else {
                 jButton1.setEnabled(false);
-                jButton2.setEnabled(true);
+                jButton2.setEnabled(false);
             }
         }
     }//GEN-LAST:event_jPasswordField1KeyReleased

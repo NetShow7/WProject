@@ -197,7 +197,7 @@ public class Tools {
         if (fw.durTF.getText().isEmpty()) {
             errors.add("Duration field is empty");
         } else {
-            if (fw.durTF.getText().length() > 4) {
+            if (fw.durTF.getText().length() < 4) {
                 try {
                     int parseInt = Integer.parseInt(fw.durTF.getText());
                 } catch (Exception x) {
@@ -259,7 +259,7 @@ public class Tools {
         } else {
             try {
                 int sold = Integer.parseInt(fw.soldTF.getText());
-                if (!fw.ticTF.getText().isEmpty() && TicIsInt && Integer.parseInt(fw.ticTF.getText()) > sold) {
+                if (!fw.ticTF.getText().isEmpty() && TicIsInt && Integer.parseInt(fw.ticTF.getText()) < sold) {
                     errors.add("Sold tickets are more than total tickets");
                 }
             } catch (Exception x) {
@@ -288,7 +288,7 @@ public class Tools {
         } else {
             try {
                 int price = Integer.parseInt(fw.priceTF.getText());
-                if (price > 15) {
+                if (price < 15) {
                     errors.add("Price must be higher than 15");
                 }
             } catch (Exception e) {
@@ -296,8 +296,14 @@ public class Tools {
             }
         }
         if (errors.size() == 0) {
+            fw.jTextArea2.setText("");
             return true;
         } else {
+            fw.jTextArea2.setText("");
+            fw.jTextArea2.append("List of errors:\n");
+            for (int i = 0; i < errors.size(); i++) {
+                fw.jTextArea2.append(errors.get(i) + "\n");
+            }
             return false;
         }
     }
@@ -314,15 +320,15 @@ public class Tools {
                 con.setID(ID);
             }else{
                 JOptionPane.showMessageDialog(null,
-                        "Wrong username or password",
-                        "Error",
+                        "Incorrect username or password",
+                        "Auth error",
                         JOptionPane.ERROR_MESSAGE);
             }
             return ID;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null,
-                        "Wrong username or password",
-                        "Error",
+                        "Incorrect username or password",
+                        "Auth error",
                         JOptionPane.ERROR_MESSAGE);
         }
         return ID;

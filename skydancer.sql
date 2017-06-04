@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-05-2017 a las 13:27:46
+-- Tiempo de generación: 03-06-2017 a las 21:59:04
 -- Versión del servidor: 10.1.21-MariaDB
--- Versión de PHP: 5.6.30
+-- Versión de PHP: 7.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -40,6 +40,13 @@ CREATE TABLE `flights` (
   `photo` varchar(150) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `flights`
+--
+
+INSERT INTO `flights` (`id`, `duration`, `origin`, `destination`, `pilot1`, `pilot2`, `tickets`, `tickets_sold`, `fdate`, `price`, `photo`) VALUES
+(1, 540, 'Bilbao', 'Helsinki', 'Vlad', 'Paco', 500, 362, '2017-06-14', 160, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -51,6 +58,13 @@ CREATE TABLE `reservations` (
   `f_id` int(4) NOT NULL,
   `u_id` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `reservations`
+--
+
+INSERT INTO `reservations` (`id`, `f_id`, `u_id`) VALUES
+(1, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -77,7 +91,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `dni`, `name`, `surname`, `birth`, `address`, `phone`, `username`, `passwd`, `email`, `isAdmin`) VALUES
-(3, '74628523G', 'Jokin', 'Iñurrieta', '1995-06-03', 'Yes street', 943726384, 'Jokin_335', 'bestpasswordever1', 'jokininu@gmail.com', NULL);
+(3, '74628523G', 'Jokin', 'Iñurrieta', '1995-06-03', 'Yes street', 943726384, 'Jokin_335', 'bestpasswordever1', 'jokininu@gmail.com', NULL),
+(4, '12345678r', 'Test', 'Test', '1999-09-09', 'Test', 123456789, 'test', 'test', 'test@test.test', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -114,17 +129,17 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `flights`
 --
 ALTER TABLE `flights`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- Restricciones para tablas volcadas
 --
